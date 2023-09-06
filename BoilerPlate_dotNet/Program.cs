@@ -1,17 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using BoilerPlate.Data;
-using BoilerPlate.Models;
-
-var allowSpecificOrigins = "allowSpecificOrigins";
+﻿var allowSpecificOrigins = "allowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ajout du context de base de données
-builder.Services.AddDbContext<BoilerPlateContext>(options =>
+// TODO ajout du context de base de données
+//builder.Services.AddDbContext<BoilerPlateContext>(options =>
 
-// TODO Choisis ton type de BDD
-options.UseSqlServer(builder.Configuration.GetConnectionString("BoilerPlateContext") ?? throw new InvalidOperationException("Connection string 'BoilerPlateContext' not found.")));
-//options.UseInMemoryDatabase("BoilerPlateContext"));
+//// TODO Choisis ton type de BDD
+//options.UseSqlServer(builder.Configuration.GetConnectionString("BoilerPlateContext") ?? throw new InvalidOperationException("Connection string 'BoilerPlateContext' not found.")));
+////options.UseInMemoryDatabase("BoilerPlateContext"));
 
 //Ajout des services de base
 builder.Services.AddCors(options =>
@@ -38,12 +34,12 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// TODO pour le seeding
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
-    SeedData.Initialize(services);
-    SeedPeople.Initialize(services);
+    //SeedData.Initialize(services);
 }
 
 
