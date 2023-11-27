@@ -19,7 +19,7 @@ export class Skill implements ISkill {
   type: string;
   level: number;
 
-  constructor(private skill: ISkillDTO
+  constructor(skill: ISkillDTO
   ) {
     this.id = skill.id;
     this.name = skill.competence;

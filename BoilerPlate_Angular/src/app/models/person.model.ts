@@ -24,7 +24,7 @@ export class Person implements IPerson {
   birthDate: string;
   skills: ISkill[];
 
-  constructor(private person: IPersonDTO) {
+  constructor(person: IPersonDTO) {
     this.id = person.id,
       this.lastName = person.nom,
       this.firstName = person.prenom,
