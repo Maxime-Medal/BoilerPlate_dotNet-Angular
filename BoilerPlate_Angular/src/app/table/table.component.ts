@@ -6,10 +6,10 @@ import {
 } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgStyle } from '@angular/common';
 import { PersonService } from '../services/person.service';
-import { ELEMENT_DATA } from '../services/mock';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Skill } from '../models/skill.model';
 
 export interface PeriodicElement {
   name: string;
@@ -17,6 +17,7 @@ export interface PeriodicElement {
   level: number;
   type: string;
   skillName: string;
+  skills: Skill[];
 }
 
 @Component({
@@ -30,18 +31,13 @@ export interface PeriodicElement {
     MatInputModule,
     MatTableModule,
     MatProgressSpinnerModule,
+    NgStyle,
   ],
 })
 export class TableComponent implements OnInit {
   personService = inject(PersonService);
   loading = signal(true);
-  displayedColumns: string[] = [
-    'name',
-    // 'birthDate',
-    'skillName',
-    'type',
-    'level',
-  ];
+  displayedColumns: string[] = ['name', 'skillName', 'type', 'level'];
 
   dataSource = new MatTableDataSource<PeriodicElement>([]);
   @ViewChild(MatTable) table!: MatTable<PeriodicElement>;
@@ -49,6 +45,7 @@ export class TableComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
+      // TODO filter the map in the skills array
       return data.skillName.toLowerCase().includes(filter);
     };
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -69,6 +66,7 @@ debugger
                 skillName: target && target.name ? target.name : '🔎',
                 type: target ? target.type : '🔎',
                 level: target && target.level ? target.level : 0,
+                skills: person.skills,
               };
             })
             .sort((a, b) => {
@@ -79,8 +77,6 @@ debugger
               }
             })
         );
-      } else {
-        this.dataSource = new MatTableDataSource(ELEMENT_DATA);
       }
       this.table.renderRows();
       this.loading.set(false);

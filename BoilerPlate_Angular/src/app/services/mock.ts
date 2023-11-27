@@ -7,6 +7,7 @@ export const ELEMENT_DATA: PeriodicElement[] = [
     name: 'Hydrogen',
     type: '1.0079',
     skillName: 'H',
+    skills: [],
   },
   {
     birthDate: new Date().toISOString(),
@@ -14,5 +15,6 @@ export const ELEMENT_DATA: PeriodicElement[] = [
     name: 'Hydrogen',
     type: '1.0079',
     skillName: 'H',
+    skills: [],
   },
 ];
