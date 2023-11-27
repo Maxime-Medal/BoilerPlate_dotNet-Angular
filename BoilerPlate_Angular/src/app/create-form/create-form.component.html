@@ -1,0 +1,94 @@
+<form [formGroup]="personForm" (ngSubmit)="onSubmit()">
+  <section>
+    <mat-form-field>
+      <mat-label>Prénom</mat-label>
+      <input matInput type="text" formControlName="firstName" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nom</mat-label>
+      <input matInput type="text" formControlName="lastName" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Date de naissance</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="birthDate" />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <button mat-fab extended color="primary" (click)="addJob()">
+      <mat-icon>add</mat-icon>
+      Ajouter un autre skill
+    </button>
+  </section>
+
+  <section formArrayName="skills">
+    @for (skill of personForm.controls.skills.controls; track skill; let
+    i=$index) {
+    <div>
+      <ng-container [formGroupName]="i">
+        <mat-form-field>
+          <mat-label>Nom de la compagnie</mat-label>
+          <input matInput type="text" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Nom du poste</mat-label>
+          <input matInput type="text" formControlName="skillName" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Date d'arrivé et de départ</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input
+              matStartDate
+              formControlName="startDate"
+              placeholder="Start date"
+            />
+            <input
+              matEndDate
+              formControlName="endDate"
+              placeholder="End date"
+            />
+          </mat-date-range-input>
+          <mat-hint>La date de départ n'est pas obligatoire</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+
+          @if (skill.controls['startDate'].hasError('matStartDateInvalid')) {
+          <mat-error>Invalid start date</mat-error>
+          } @if (skill.controls['endDate'].hasError('matEndDateInvalid')) {
+          <mat-error>Invalid end date</mat-error>
+          }
+        </mat-form-field>
+        <button
+          mat-mini-fab
+          extended
+          color="accent"
+          [ngStyle]="{ 'margin-top': '22px' }"
+          [disabled]="i === 0"
+          (click)="removeJob(i)"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+      </ng-container>
+    </div>
+    }
+  </section>
+
+  <button
+    mat-raised-button
+    type="submit"
+    color="primary"
+    class="submit-btn"
+    [disabled]="!personForm.valid"
+  >
+    Ajouter
+  </button>
+</form>

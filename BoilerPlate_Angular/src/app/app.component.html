@@ -1,0 +1,18 @@
+<app-header></app-header>
+<section class="container">
+  <button
+    mat-fab
+    extended
+    color="accent"
+    (click)="displayForm.set(!displayForm())"
+  >
+    <mat-icon>{{ displayForm() ? "remove" : "add" }}</mat-icon>
+    Ajouter une nouvelle personne
+  </button>
+  @if (displayForm()) {
+  <app-create-form></app-create-form>
+  }
+</section>
+<section class="container">
+  <app-table></app-table>
+</section>

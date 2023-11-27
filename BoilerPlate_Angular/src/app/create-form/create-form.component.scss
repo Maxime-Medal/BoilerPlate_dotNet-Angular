@@ -1,0 +1,21 @@
+
+:host {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+mat-form-field {
+  padding: 12px;
+}
+
+div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  // margin-left: 1rem;
+}
+
+.submit-btn {
+  float: left;
+}
