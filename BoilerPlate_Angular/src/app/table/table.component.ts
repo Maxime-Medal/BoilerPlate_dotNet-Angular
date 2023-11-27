@@ -1,5 +1,9 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
+import {
+  MatTable,
+  MatTableDataSource,
+  MatTableModule,
+} from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DatePipe } from '@angular/common';
@@ -40,9 +44,13 @@ export class TableComponent implements OnInit {
   ];
 
   dataSource = new MatTableDataSource<PeriodicElement>([]);
+  @ViewChild(MatTable) table!: MatTable<PeriodicElement>;
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+      return data.skillName.toLowerCase().includes(filter);
+    };
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
@@ -50,20 +58,30 @@ export class TableComponent implements OnInit {
     this.personService.getList().subscribe((res) => {
       if (res && res.length) {
         this.dataSource = new MatTableDataSource(
-          res.map((person, index) => {
-            const target = person.skills[index];
-            return {
-              name: person.fullName,
-              birthDate: person.age.toString(),
-              type: target ? target.name : '🔎',
-              skillName: target && target.type ? target.type : '🔎',
-              level: target && target.level ? target.level : 0,
-            };
-          })
+          res
+            .map((person) => {
+              const target = person.skills[0];
+
+              return {
+                name: person.fullName,
+                birthDate: person.age.toString(),
+                skillName: target && target.name ? target.name : '🔎',
+                type: target ? target.type : '🔎',
+                level: target && target.level ? target.level : 0,
+              };
+            })
+            .sort((a, b) => {
+              if (a.level !== b.level) {
+                return a.level < b.level ? 1 : -1;
+              } else {
+                return !b.name.localeCompare(a.name) ? 1 : -1;
+              }
+            })
         );
       } else {
         this.dataSource = new MatTableDataSource(ELEMENT_DATA);
       }
+      this.table.renderRows();
       this.loading.set(false);
     });
   }
