@@ -1,4 +1,12 @@
-import { ISkill } from './skill.model';
+import { ISkill, ISkillDTO, Skill } from './skill.model';
+
+export interface IPersonDTO {
+  id: string;
+  nom: string;
+  prenom: string;
+  dateNaissance: string;
+  evaluations: ISkillDTO[];
+}
 
 export interface IPerson {
   id: string;
@@ -8,14 +16,21 @@ export interface IPerson {
   skills: ISkill[];
 }
 
+
 export class Person implements IPerson {
-  constructor(
-    public id: string,
-    public lastName: string,
-    public firstName: string,
-    public birthDate: string,
-    public skills: ISkill[]
-  ) {}
+  id: string;
+  lastName: string;
+  firstName: string;
+  birthDate: string;
+  skills: ISkill[];
+
+  constructor(private person: IPersonDTO) {
+    this.id = person.id,
+      this.lastName = person.nom,
+      this.firstName = person.prenom,
+      this.birthDate = person.dateNaissance,
+      this.skills = person.evaluations.map(e => new Skill(e))
+  }
 
   get fullName() {
     return `${this.firstName} ${this.lastName}`;

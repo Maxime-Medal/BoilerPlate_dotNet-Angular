@@ -40,7 +40,7 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 })
 export class CreateFormComponent {
   personForm;
-  model = new Person('1', 'Tom', 'Cruise', new Date().toString(), []);
+  model!: any;
 
   constructor(private fb: FormBuilder, private personService: PersonService) {
     this.personForm = this.fb.group({

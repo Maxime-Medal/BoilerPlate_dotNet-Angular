@@ -52,8 +52,7 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.personService.getAllPersonne().subscribe((res) => {
-debugger
+    this.personService.getList().subscribe((res) => {
       if (res && res.length) {
         this.dataSource = new MatTableDataSource(
           res
@@ -67,7 +66,7 @@ debugger
                 type: target ? target.type : '🔎',
                 level: target && target.level ? target.level : 0,
                 skills: person.skills,
-              };
+              } as PeriodicElement;
             })
             .sort((a, b) => {
               if (a.level !== b.level) {

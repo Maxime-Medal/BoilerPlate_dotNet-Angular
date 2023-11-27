@@ -1,3 +1,11 @@
+
+export interface ISkillDTO {
+  id: string;
+  competence: string;
+  type: string;
+  note: number;
+}
+
 export interface ISkill {
   id: string;
   name: string;
@@ -6,10 +14,16 @@ export interface ISkill {
 }
 
 export class Skill implements ISkill {
-  constructor(
-    public id: string,
-    public name: string,
-    public type: string,
-    public level: number
-  ) {}
+  id: string;
+  name: string;
+  type: string;
+  level: number;
+
+  constructor(private skill: ISkillDTO
+  ) {
+    this.id = skill.id;
+    this.name = skill.competence;
+    this.type = skill.type;
+    this.level = skill.note;
+  }
 }

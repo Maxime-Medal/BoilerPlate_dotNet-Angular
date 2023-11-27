@@ -10,6 +10,7 @@ namespace BoilerPlate_dotNet.Data.Dto
         public int Id { get; set; }
 
         public string Competence { get; set; }
+        public string Type { get; set; }
 
         public int Note { get; set; }
     }
