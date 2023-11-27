@@ -9,7 +9,7 @@ namespace BoilerPlate_dotNet.Data.Dto
     {
         public int Id { get; set; }
 
-        public Competence? Competence { get; set; }
+        public string Competence { get; set; }
 
         public int Note { get; set; }
     }

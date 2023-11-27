@@ -55,7 +55,8 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.personService.getList().subscribe((res) => {
+    this.personService.getAllPersonne().subscribe((res) => {
+debugger
       if (res && res.length) {
         this.dataSource = new MatTableDataSource(
           res

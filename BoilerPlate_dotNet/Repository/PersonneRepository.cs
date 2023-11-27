@@ -56,7 +56,7 @@ namespace BoilerPlate_dotNet.Repository
                     EvaluationDto eval = new EvaluationDto
                     {
                       Id = ev.Id,
-                      Competence = ev.Competence,
+                      Competence = ev.Competence.Nom,
                       Note = ev.Note
                     };  
                     evalDto.Add(eval);
