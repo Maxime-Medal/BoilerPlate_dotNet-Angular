@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { IPerson, IPersonDTO, Person } from '../models/person.model';
-import { Skill } from '../models/skill.model';
+import { ISkill } from '../models/skill.model';
 
 const API_BASE_URL = 'https://localhost:7075/api';
 
@@ -41,9 +41,30 @@ export class PersonService {
     };
 
     return this.http.post<IPerson>(
-      `${API_BASE_URL}user`,
+      `${API_BASE_URL}/Personne`,
       {
         ...person,
+      },
+      requestOptions
+    );
+  }
+
+  createSkill(skill: ISkill): Observable<ISkill> {
+    const headerDict = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Origin': '*',
+    };
+
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict),
+    };
+
+    return this.http.post<ISkill>(
+      `${API_BASE_URL}/Competence`,
+      {
+        ...skill,
       },
       requestOptions
     );

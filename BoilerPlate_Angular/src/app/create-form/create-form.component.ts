@@ -20,6 +20,7 @@ import { IPerson, Person } from '../models/person.model';
 import { PersonService } from '../services/person.service';
 import { NgStyle } from '@angular/common';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { ISkill } from '../models/skill.model';
 
 @Component({
   selector: 'app-create-form',
@@ -40,6 +41,7 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 })
 export class CreateFormComponent {
   personForm;
+  skillForm;
   model!: any;
 
   constructor(private fb: FormBuilder, private personService: PersonService) {
@@ -49,17 +51,35 @@ export class CreateFormComponent {
       birthDate: this.fb.control('', [Validators.required, this.ageValidator(70)]),
       skills: this.fb.array([this.newSkill()]),
     });
+
+    this.skillForm = this.fb.group({
+      name: this.fb.control('', Validators.required),
+      type: this.fb.control('', Validators.required),
+    });
   }
 
   get skillsForm(): FormArray {
-    return this.personForm.get('skills') as FormArray;
+    return this.skillsForm.get('skills') as FormArray;
   }
 
   public onSubmit() {
-    const form = this.personForm.getRawValue() as IPerson;
-    form.skills = [];
-    console.log(form);
-    this.personService.createPerson(form).subscribe((res) => console.log(res));
+    const personFormValue = this.personForm.getRawValue() as IPerson;
+    const skillFormValue = this.skillForm.getRawValue() as ISkill;
+
+    this.personService.createPerson(personFormValue).subscribe((personRes) => {
+      console.log(personRes);
+  
+      // Associez la compétence à la personne (si nécessaire)
+      if (personRes && personRes.id) {
+        // Vous devrez peut-être ajuster cela en fonction de la structure de votre backend
+        skillFormValue.id = personRes.id;
+  
+        // Soumettez la compétence
+        this.personService.createSkill(skillFormValue).subscribe((skillRes) => {
+          console.log(skillRes);
+        });
+      }
+    });
   }
 
   public addSkill() {
