@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import {
   Validators,
@@ -46,7 +46,7 @@ export class CreateFormComponent {
       firstName: this.fb.control('', Validators.required),
       lastName: this.fb.control('', Validators.required),
       birthDate: this.fb.control('', Validators.required),
-      skills: this.fb.array([this.newJob()]),
+      skills: this.fb.array([this.newSkill()]),
     });
   }
 
@@ -61,20 +61,19 @@ export class CreateFormComponent {
     this.personService.createPerson(form).subscribe((res) => console.log(res));
   }
 
-  public addJob() {
-    this.skillsForm.push(this.newJob());
+  public addSkill() {
+    this.skillsForm.push(this.newSkill());
   }
 
-  public removeJob(i: number) {
+  public removeSkill(i: number) {
     this.skillsForm.removeAt(i);
   }
 
-  private newJob(): FormGroup {
+  private newSkill(): FormGroup {
     return this.fb.group({
       name: this.fb.control('', Validators.required),
-      skillName: this.fb.control('', Validators.required),
-      startDate: this.fb.control('', Validators.required),
-      endDate: this.fb.control(''),
+      level: this.fb.control('', Validators.required),
+      type: this.fb.control('', Validators.required),
     });
   }
 }
