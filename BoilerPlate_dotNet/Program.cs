@@ -1,13 +1,25 @@
-﻿var allowSpecificOrigins = "allowSpecificOrigins";
+﻿using BoilerPlate_dotNet.Data;
+using BoilerPlate_dotNet.Repository.Interface;
+using BoilerPlate_dotNet.Repository;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+
+var allowSpecificOrigins = "allowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
-
-// TODO ajout du context de base de données
-//builder.Services.AddDbContext<BoilerPlateContext>(options =>
-
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+});
 //// TODO Choisis ton type de BDD
-//options.UseSqlServer(builder.Configuration.GetConnectionString("BoilerPlateContext") ?? throw new InvalidOperationException("Connection string 'BoilerPlateContext' not found.")));
-////options.UseInMemoryDatabase("BoilerPlateContext"));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("BoilerPlateContext")
+    ));
+
+builder.Services.AddScoped<ICompetenceRepository, CompetenceRepository>();
+builder.Services.AddScoped<IPersonneRepository, PersonneRepository>();
+builder.Services.AddScoped<IEvaluationRepository, EvaluationRepository>();
 
 //Ajout des services de base
 builder.Services.AddCors(options =>
