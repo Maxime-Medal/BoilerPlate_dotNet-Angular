@@ -11,6 +11,9 @@
     </mat-form-field>
 
     <mat-form-field>
+      <mat-error>
+        @if (personForm.get('birthDate')?.hasError('invalidAge')) {La personne doit avoir moins de 70 ans.}
+      </mat-error>
       <mat-label>Date de naissance</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="birthDate" />
       <mat-hint>MM/DD/YYYY</mat-hint>

@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { IPerson, Person } from '../models/person.model';
-import { ELEMENT_DATA } from './mock';
 
 const API_BASE_URL = 'http://localhost:3000/api/v1/';
 

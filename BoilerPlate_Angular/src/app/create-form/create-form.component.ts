@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { IPerson, Person } from '../models/person.model';
 import { PersonService } from '../services/person.service';
 import { NgStyle } from '@angular/common';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 @Component({
   selector: 'app-create-form',
@@ -45,7 +46,7 @@ export class CreateFormComponent {
     this.personForm = this.fb.group({
       firstName: this.fb.control('', Validators.required),
       lastName: this.fb.control('', Validators.required),
-      birthDate: this.fb.control('', Validators.required),
+      birthDate: this.fb.control('', [Validators.required, this.ageValidator(70)]),
       skills: this.fb.array([this.newSkill()]),
     });
   }
@@ -75,5 +76,15 @@ export class CreateFormComponent {
       level: this.fb.control('', Validators.required),
       type: this.fb.control('', Validators.required),
     });
+  }
+
+  private ageValidator(maxAge: number): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const birthDate = new Date(control.value);
+      const currentDate = new Date();
+      const age = currentDate.getFullYear() - birthDate.getFullYear();
+
+      return age <= maxAge ? null : { 'invalidAge': { value: control.value } };
+    };
   }
 }
